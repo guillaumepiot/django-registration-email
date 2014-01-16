@@ -28,6 +28,8 @@ class EmailBackend(ModelBackend):
         else:
             username_is_email = True
         if username_is_email:
+            app_label, model_name = settings.AUTH_USER_MODEL.split('.')
+            User = get_model(app_label, model_name)
             try:
                 user = User.objects.get(email=username)
             except User.DoesNotExist:
