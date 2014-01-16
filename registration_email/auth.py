@@ -5,8 +5,9 @@ Inspired by http://djangosnippets.org/snippets/2463/
 
 """
 from django.contrib.auth.backends import ModelBackend
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.core.validators import validate_email
+from django.db.models.loading import get_model
 
 
 class EmailBackend(ModelBackend):
@@ -42,6 +43,8 @@ class EmailBackend(ModelBackend):
         return None
 
     def get_user(self, user_id):
+        app_label, model_name = settings.AUTH_USER_MODEL.split('.')
+        User = get_model(app_label, model_name)
         try:
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:
