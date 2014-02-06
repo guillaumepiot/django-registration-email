@@ -5,8 +5,11 @@ import os
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.loading import get_model
+
+app_label, model_name = settings.AUTH_USER_MODEL.split('.')
+User = get_model(app_label, model_name)
 
 
 # I put this on all required fields, because it's easier to pick up
